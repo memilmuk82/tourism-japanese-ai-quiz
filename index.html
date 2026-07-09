@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 일본 여행 회화 퀴즈 웹앱 수업 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fdfbf7;
+            color: #4a4a4a;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .japanese-font {
+            font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;
+        }
+
+        .prompt-box {
+            background-color: #f1f5f9;
+            border-left: 4px solid #6366f1;
+            position: relative;
+        }
+
+        .copy-btn {
+            transition: all 0.2s;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .step-card {
+            border-top: 4px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            border-top-color: #fbcfe8;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="pb-12">
+
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-orange-100 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🇯🇵</span>
+                <h1 class="text-xl font-bold text-gray-800">관광일본어과 AI 융합 수업</h1>
+            </div>
+            <div class="hidden md:flex gap-4">
+                <button onclick="showTab('overview')" class="nav-link px-3 py-1 rounded-full text-sm font-medium hover:bg-pink-50 transition">수업개요</button>
+                <button onclick="showTab('demo')" class="nav-link px-3 py-1 rounded-full text-sm font-medium hover:bg-pink-50 transition">교사시연</button>
+                <button onclick="showTab('practice')" class="nav-link px-3 py-1 rounded-full text-sm font-medium hover:bg-pink-50 transition">학생실습</button>
+                <button onclick="showTab('emergency')" class="nav-link px-3 py-1 rounded-full text-sm font-medium bg-red-50 text-red-600 hover:bg-red-100 transition">비상대응</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 mt-8">
+        
+        <!-- SECTION: Overview -->
+        <section id="overview" class="tab-content active">
+            <div class="space-y-8">
+                <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-orange-50">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">AI로 만드는 일본 여행 회화 퀴즈 웹앱 🍱</h2>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed max-w-3xl">
+                        이 수업은 코딩 문법을 깊게 배우는 시간이 아닙니다. 학생들이 관광일본어과에서 배운 일본어 표현을 
+                        AI(Gemini Canvas)와 함께 <strong>실제 작동하는 디지털 결과물</strong>로 바꾸어 보는 체험 수업입니다.
+                    </p>
+                    <div class="flex flex-wrap gap-3 mb-10">
+                        <span class="bg-blue-50 text-blue-700 px-4 py-2 rounded-2xl text-sm font-semibold">⏰ 35분 완성</span>
+                        <span class="bg-pink-50 text-pink-700 px-4 py-2 rounded-2xl text-sm font-semibold">🏫 관광일본어과 2반</span>
+                        <span class="bg-green-50 text-green-700 px-4 py-2 rounded-2xl text-sm font-semibold">🤖 Gemini Canvas</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-orange-50">
+                        <div>
+                            <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-gray-800">
+                                <span class="w-2 h-6 bg-pink-400 rounded-full"></span> 오늘의 수업 목표
+                            </h3>
+                            <ul class="space-y-4">
+                                <li class="flex gap-4 items-start">
+                                    <span class="bg-pink-100 text-pink-600 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1">1</span>
+                                    <p class="text-gray-700">일본 여행 상황별 전공 지식을 선정할 수 있다.</p>
+                                </li>
+                                <li class="flex gap-4 items-start">
+                                    <span class="bg-pink-100 text-pink-600 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1">2</span>
+                                    <p class="text-gray-700">Gemini Canvas에 프롬프트를 입력해 퀴즈 앱을 만든다.</p>
+                                </li>
+                                <li class="flex gap-4 items-start">
+                                    <span class="bg-pink-100 text-pink-600 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1">3</span>
+                                    <p class="text-gray-700">AI 결과물을 검토하고 필요한 부분을 직접 수정 요청한다.</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50/50 p-6 rounded-2xl">
+                            <h3 class="text-xl font-bold mb-4 text-orange-800">💡 핵심 메시지</h3>
+                            <p class="text-gray-700 leading-relaxed text-sm">
+                                "AI는 대신 해주는 도구가 아니라, 내가 가진 전공 지식을 디지털 결과물로 바꾸는 도구입니다. 
+                                중요한 것은 AI가 만들어줬다는 사실이 아니라, **내가 주제를 정하고 표현을 고르고 결과물을 수정했다는 점**입니다."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Teacher Demo -->
+        <section id="demo" class="tab-content">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-orange-50">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">👨‍🏫 교사 시연 가이드</h2>
+                    <span class="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full text-sm">주제: 식당에서 주문하기</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-gray-700">시연 흐름</h3>
+                        <div class="relative pl-6 border-l-2 border-dashed border-gray-200 space-y-6">
+                            <div class="relative">
+                                <div class="absolute -left-[31px] bg-white border-2 border-indigo-500 w-4 h-4 rounded-full"></div>
+                                <p class="font-semibold">1. Gemini 접속 및 로그인</p>
+                                <p class="text-sm text-gray-500 italic">"여러분, 제가 1분 만에 앱을 뚝딱 만들어볼게요!"</p>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-[31px] bg-white border-2 border-indigo-500 w-4 h-4 rounded-full"></div>
+                                <p class="font-semibold">2. 프롬프트 복사 및 입력</p>
+                                <p class="text-sm text-gray-500">아래 코드블록의 시연용 프롬프트를 전송합니다.</p>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-[31px] bg-white border-2 border-indigo-500 w-4 h-4 rounded-full"></div>
+                                <p class="font-semibold">3. Canvas 미리보기 확인</p>
+                                <p class="text-sm text-gray-500">일본어 문장, 히라가나, 뜻이 잘 들어갔는지 확인합니다.</p>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute -left-[31px] bg-white border-2 border-indigo-500 w-4 h-4 rounded-full"></div>
+                                <p class="font-semibold">4. 디자인 수정 시연</p>
+                                <p class="text-sm text-gray-500">"색상을 벚꽃색으로 바꿔줘"라고 추가 요청합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-gray-700 mb-4">시연용 프롬프트</h3>
+                        <div class="prompt-box p-4 rounded-xl text-sm font-mono leading-relaxed h-[250px] overflow-y-auto" id="teacherPrompt">
+너는 일본어 교육용 웹앱을 만드는 전문 개발자야. 
+관광일본어과 학생들이 사용할 모바일 '식당 주문 회화 퀴즈 웹앱'을 만들어줘.
+1. 기술: 단일 HTML 파일 (Tailwind CSS 포함)
+2. 내용: 5문제, 일본어/히라가나/한국어 포함
+3. 기능: 정답보기, 다음문제 버튼, 결과 점수
+4. 디자인: 일본 여행 느낌의 깔끔하고 귀여운 스타일
+5. 코드 내에 초보자를 위한 한국어 주석을 달아줘.
+                        </div>
+                        <button onclick="copyToClipboard('teacherPrompt')" class="w-full mt-4 bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 copy-btn">📋 프롬프트 복사하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Student Practice -->
+        <section id="practice" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Sidebar -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-orange-50">
+                        <h3 class="font-bold mb-4">활동 순서</h3>
+                        <div class="space-y-3 text-sm">
+                            <p class="flex gap-2"><span>1.</span> 주제 고르기</p>
+                            <p class="flex gap-2"><span>2.</span> 프롬프트 수정</p>
+                            <p class="flex gap-2"><span>3.</span> Gemini 전송</p>
+                            <p class="flex gap-2"><span>4.</span> 앱 실행 & 수정</p>
+                            <p class="flex gap-2 font-bold text-pink-600"><span>5.</span> 친구와 체험</p>
+                        </div>
+                    </div>
+                    <div class="bg-pink-50 p-6 rounded-2xl border border-pink-100">
+                        <h3 class="font-bold text-pink-700 mb-2">💬 피드백 문구</h3>
+                        <p class="text-xs text-pink-600 mb-4">수정할 때 복사해서 쓰세요!</p>
+                        <div class="space-y-2">
+                            <button onclick="copyText('디자인을 더 귀엽고 깔끔하게 바꿔줘')" class="w-full text-left text-xs bg-white p-2 rounded border border-pink-200 hover:bg-pink-100 transition">"디자인 귀엽게..."</button>
+                            <button onclick="copyText('버튼 크기를 더 크게 만들어줘')" class="w-full text-left text-xs bg-white p-2 rounded border border-pink-200 hover:bg-pink-100 transition">"버튼 크게..."</button>
+                            <button onclick="copyText('마지막에 칭찬 멘트를 넣어줘')" class="w-full text-left text-xs bg-white p-2 rounded border border-pink-200 hover:bg-pink-100 transition">"칭찬 멘트..."</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="lg:col-span-3 space-y-6">
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-orange-50">
+                        <h3 class="text-xl font-bold mb-6 text-gray-800">실습 주제 선택</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                            <div class="step-card bg-orange-50 p-4 rounded-xl text-center cursor-pointer" onclick="updateStudentPrompt('공항에서 입국 심사하기')">
+                                <span class="text-2xl block mb-2">✈️</span>
+                                <p class="text-xs font-bold">공항 입국심사</p>
+                            </div>
+                            <div class="step-card bg-orange-50 p-4 rounded-xl text-center cursor-pointer" onclick="updateStudentPrompt('호텔 체크인하기')">
+                                <span class="text-2xl block mb-2">🏨</span>
+                                <p class="text-xs font-bold">호텔 체크인</p>
+                            </div>
+                            <div class="step-card bg-orange-50 p-4 rounded-xl text-center cursor-pointer" onclick="updateStudentPrompt('식당에서 주문하기')">
+                                <span class="text-2xl block mb-2">🍜</span>
+                                <p class="text-xs font-bold">식당 주문</p>
+                            </div>
+                            <div class="step-card bg-orange-50 p-4 rounded-xl text-center cursor-pointer" onclick="updateStudentPrompt('길 묻기')">
+                                <span class="text-2xl block mb-2">🗺️</span>
+                                <p class="text-xs font-bold">길 묻기</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 rounded-2xl p-6 text-green-400 font-mono text-sm leading-relaxed relative">
+                            <p class="mb-4 text-gray-500 font-sans">// 학생용 기본 프롬프트</p>
+                            <div id="studentPrompt">
+나는 관광일본어과 학생이야. 내가 고른 주제인 [<span id="selectedTopic" class="text-yellow-300 underline font-bold">식당에서 주문하기</span>] 상황에서 자주 쓰는 퀴즈 웹앱을 만들어줘. 
+- 일본어 문장, 히라가나, 뜻 포함
+- 퀴즈 5개, 정답확인/다음버튼
+- 귀엽고 깔끔한 디자인 (스마트폰 대응)
+- 단일 HTML 파일로 작성하고 한국어 주석 포함해줘.
+                            </div>
+                            <button onclick="copyToClipboard('studentPrompt')" class="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-lg text-xs hover:bg-green-700 transition">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-orange-50">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">친구 앱 체험 체크리스트</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="p-3 font-semibold">체크 항목</th>
+                                        <th class="p-3 font-semibold">확인</th>
+                                        <th class="p-3 font-semibold">설명</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr>
+                                        <td class="p-3">가독성</td>
+                                        <td class="p-3"><input type="checkbox" class="w-4 h-4 accent-pink-500"></td>
+                                        <td class="p-3">일본어 문장과 뜻이 잘 보이나요?</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">기능성</td>
+                                        <td class="p-3"><input type="checkbox" class="w-4 h-4 accent-pink-500"></td>
+                                        <td class="p-3">버튼이 잘 동작하나요?</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3">디자인</td>
+                                        <td class="p-3"><input type="checkbox" class="w-4 h-4 accent-pink-500"></td>
+                                        <td class="p-3">일본 여행 테마와 잘 어울리나요?</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: Emergency -->
+        <section id="emergency" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-l-8 border-red-400">
+                    <h2 class="text-2xl font-bold text-red-600 mb-6 flex items-center gap-2">⚠️ 로그인 지연 대응</h2>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-red-50 rounded-xl">
+                            <p class="font-bold mb-1">1. 선구자 시연</p>
+                            <p class="text-sm">성공한 학생의 화면을 대형 화면에 공유하여 동기부여</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-xl">
+                            <p class="font-bold mb-1">2. 아날로그 설계</p>
+                            <p class="text-sm text-red-700">종이에 퀴즈 문제 3개와 상황을 먼저 적게 합니다.</p>
+                        </div>
+                        <div class="p-4 bg-red-50 rounded-xl">
+                            <p class="font-bold mb-1">3. 2인 1조 페어</p>
+                            <p class="text-sm text-red-700">로그인이 된 친구와 팀이 되어 함께 기획합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-sm border-l-8 border-yellow-400">
+                    <h2 class="text-2xl font-bold text-yellow-600 mb-6 flex items-center gap-2">📑 Plan B: 접속 불가 시</h2>
+                    <p class="text-gray-600 text-sm mb-4">서비스 접속 불가 시, '프롬프트 설계' 수업으로 즉시 전환합니다.</p>
+                    <div class="border-2 border-dashed border-yellow-200 p-6 rounded-2xl">
+                        <h4 class="font-bold mb-4 text-yellow-800">기획 활동지 미션</h4>
+                        <ul class="text-sm space-y-2 text-gray-700">
+                            <li>- 내가 만들고 싶은 주제(상황) 선정</li>
+                            <li>- 퀴즈에 넣을 일본어 표현 3가지 수기 작성</li>
+                            <li>- AI에게 보낼 상세 지시문(프롬프트) 완성</li>
+                            <li>- 짝꿍에게 내 기획서가 어떤 앱이 될지 설명하기</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 bg-gray-100 py-10 px-6">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div>
+                <h4 class="font-bold text-gray-800">관광일본어과 체험 수업 🎁</h4>
+                <p class="text-sm text-gray-500 italic">"내 전공 지식이 디지털 결과물이 되는 경험"</p>
+            </div>
+            <div class="flex gap-4">
+                <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                    <p class="text-xs text-gray-400">성취도</p>
+                    <p class="font-bold text-lg text-pink-500">100%</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                    <p class="text-xs text-gray-400">피드백</p>
+                    <p class="font-bold text-lg text-indigo-500">활발</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Navigation Logic
+        function showTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Student Topic Selection
+        function updateStudentPrompt(topic) {
+            document.getElementById('selectedTopic').innerText = topic;
+        }
+
+        // Copy Functions
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('프롬프트가 복사되었습니다! Gemini Canvas에 붙여넣으세요.');
+            });
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`"${text}" 문구가 복사되었습니다.`);
+            });
+        }
+    </script>
+</body>
+</html>
